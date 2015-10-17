@@ -17,20 +17,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     tcpHandler = [[TCP_Handler alloc] initWithDelegate:self];
-    [connectButton setTitle:@"My Title" forState:UIControlStateNormal];
-    UIButton *mySwitch = [[UIButton alloc] initWithFrame:CGRectMake(130, 235, 0, 0)];
-    [mySwitch addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:mySwitch];
-    
-}
-
-- (void)changeSwitch:(id)sender{
-    
-    if([sender isOn]){
-        NSLog(@"Connect");
-    } else{
-        NSLog(@"Disconnect");
-    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -41,12 +27,38 @@
 - (IBAction)openconnection:(UIButton *)sender {
     if (!tcpHandler.connecting) {
         if (!tcpHandler.connected) {
+            [self setConnectState:1];
             [tcpHandler connect];
         }
         else{
             [tcpHandler disconnect];
         }
     }
+}
+
+-(void)setConnectState:(int)state{
+    NSString *title = @"";
+    bool enabled = true;
+    switch (state) {
+        case 0:
+            //Disconnected
+            title = @"Connect";
+            break;
+        case 1:
+            //Connecting
+            title = @"Connecting...";
+            enabled = false;
+            break;
+        case 2:
+            //Connected
+            title = @"Disconnect";
+            break;
+            
+        default:
+            break;
+    }
+    [connectButton setTitle:title forState:UIControlStateNormal];
+    [connectButton setEnabled:enabled];
 }
 
 -(NSString *)performCalculation:(NSString *)data{
@@ -72,14 +84,17 @@
 
 -(void)didConnect{
     NSLog(@"CONNECTED");
+    [self setConnectState:2];
 }
 
 -(void)didDisconnect{
     NSLog(@"DISCONNECTED");
+    [self setConnectState:0];
 }
 
 -(void)connectFailed{
     NSLog(@"FAILED TO CONNECT");
+    [self setConnectState:0];
 }
 
 -(void)didReceiveCalculation:(NSString *)calculation{

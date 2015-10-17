@@ -22,7 +22,8 @@
 
 -(void)connect{
     NSError *err = nil;
-    if (![_socket connectToHost:[NSString stringWithFormat:@"%s",HOST_IP] onPort:HOST_PORT error:&err]) // Asynchronous!
+    
+    if (![_socket connectToHost:[NSString stringWithFormat:@"%s",HOST_IP] onPort:HOST_PORT withTimeout:1 error:&err]) // Asynchronous!
     {
         // If there was an error, it's likely something like "already connected" or "no delegate set"
         NSLog(@"%@",err.localizedDescription);
@@ -53,6 +54,12 @@
     self.connecting = false;
     [_delegate didConnect];
     [_socket readDataToData:[@"\n" dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:5];
+}
+
+-(void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err{
+    [_delegate didDisconnect];
+    self.connecting = false;
+    self.connected = false;
 }
 
 - (void)socket:(GCDAsyncSocket *)sender didReadData:(NSData *)data withTag:(long)tag

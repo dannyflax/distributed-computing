@@ -3,6 +3,7 @@ import asyncore
 import socket
 import Tkinter
 import threading
+import decimal
 import time
 
 class simpleapp_tk(Tkinter.Tk):
@@ -125,7 +126,7 @@ class EchoServer(asyncore.dispatcher):
 
     		distributedCount = 0
     		counter = 0
-    		#for(i = 0; distributedCount < self.seriesRange; i++):
+
     		while(distributedCount < self.seriesRange):
     			increase = increment
     			if(counter < modResult):
@@ -158,7 +159,15 @@ class EchoServer(asyncore.dispatcher):
     def handlerFinishedCalculating(self,handler,data):
         self.calcNumber = self.calcNumber + 1
         handler.calculating = False
-        self.calcResult = self.calcResult + int(data)
+
+        # Check to see if the data is a valid decimal
+
+        try:
+        	castedData = decimal(data)
+        	self.calcResult = self.calcResult + decimal(data)
+        except:
+        	print "Handler returned " + str(data) + " for some reason."
+
         if self.calcNumber == self.connections:
             self.calcFinished()
             

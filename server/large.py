@@ -56,7 +56,8 @@ class simpleapp_tk(Tkinter.Tk):
 
     def calculate(self):
         print "gonna calculate eventually"
-        self.server.startCalculating()
+        #self.server.startCalculating()
+        self.server.distributeCalculations();
 
     def stopCalculating(self):
         self.server.stopCalculating()
@@ -85,7 +86,8 @@ class EchoServer(asyncore.dispatcher):
         self.set_reuse_addr()
         self.bind((host, port))
         self.listen(5)
-        self.connections = 0
+        self.seriesRange = 100000											# the "n" argument in the geometric series
+        self.connections = 0												# amount of devices connected to server
         self.connectionHandlers = []
         self.calculating = False
         self.calcResult = 0
@@ -102,6 +104,7 @@ class EchoServer(asyncore.dispatcher):
             self.connectionHandlers.append(handler)
             self.connections = self.connections + 1
 
+    # DEPRECATED
     def startCalculating(self):
         if(self.connections > 0):
             self.calcNumber = 0
@@ -111,6 +114,29 @@ class EchoServer(asyncore.dispatcher):
                 handler.send("hey")
         else:
             self.calcFinished()
+
+    def distributeCalculations(self):
+    	if(self.connections > 0):
+    		self.calcNumber = 0
+    		self.calculating = True
+
+    		increment = self.seriesRange / len(self.connectionHandlers)
+    		modResult = self.seriesRange % len(self.connectionHandlers)
+
+    		distributedCount = 0
+    		counter = 0
+    		#for(i = 0; distributedCount < self.seriesRange; i++):
+    		while(distributedCount < self.seriesRange):
+    			increase = increment
+    			if(i < modResult):
+    				increase = increase + 1
+    			self.connectionHandlers(counter).calculating = True
+    			self.connectionHandlers(counter).send(str(distributedCount) + ":" + str(distributedCount + increase))
+    			distributedCount += increase
+    	else:
+    		self.calcFinished()
+
+
 
     def stopCalculating(self):
         self.calculating = False

@@ -61,6 +61,22 @@
     [connectButton setEnabled:enabled];
 }
 
+-(void)setTimerAndRetrieve:(NSString *)value{
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerTick) userInfo:nil repeats:true];
+}
+
+
+- (void)timerTick:(NSTimer *)timer {
+    NSDate *now = [NSDate date];
+    
+    static NSDateFormatter *dateFormatter;
+    if (!dateFormatter) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"h:mm:ss a";  // very simple format  "8:47:22 AM"
+    }
+    self.myTimerLabel.text = [dateFormatter stringFromDate:now];
+}
+
 -(NSString *)performCalculation:(NSString *)data{
     if(![data containsString:@":"]){
         return @"Error";

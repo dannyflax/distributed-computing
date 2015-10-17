@@ -24,11 +24,19 @@
                                     <action selector="openconnection:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gN7-Ez-XrE"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time consumed for comptations" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KQG-8J-eSk">
+                                <rect key="frame" x="176" y="332" width="248" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="KQG-8J-eSk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0cW-SP-pVY"/>
                             <constraint firstItem="xPj-Pr-qo3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="37W-w4-SA0"/>
+                            <constraint firstItem="KQG-8J-eSk" firstAttribute="top" secondItem="xPj-Pr-qo3" secondAttribute="bottom" constant="17" id="IM6-fw-FMi"/>
                             <constraint firstItem="xPj-Pr-qo3" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="SZl-Qg-dhv"/>
                         </constraints>
                     </view>

@@ -87,7 +87,7 @@ class EchoServer(asyncore.dispatcher):
 		self.set_reuse_addr()
 		self.bind((host, port))
 		self.listen(5)
-		self.seriesRange = 100000											# the "n" argument in the geometric series
+		self.seriesRange = 1000000000						# the "n" argument in the geometric series
 		self.connections = 0												# amount of devices connected to server
 		self.connectionHandlers = []
 		self.calculating = False

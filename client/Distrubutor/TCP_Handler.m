@@ -22,16 +22,16 @@
 
 -(void)connect{
     NSError *err = nil;
-    if (![_socket connectToHost:[NSString stringWithFormat:@"%s",HOST_IP] onPort:HOST_PORT error:&err]) // Asynchronous!
+    
+    if (![_socket connectToHost:[NSString stringWithFormat:@"%s",HOST_IP] onPort:HOST_PORT withTimeout:1 error:&err]) // Asynchronous!
     {
         // If there was an error, it's likely something like "already connected" or "no delegate set"
-        
         NSLog(@"%@",err.localizedDescription);
         [_delegate connectFailed];
     }
     else{
         self.connecting = true;
-        [_socket readDataToLength:500 withTimeout:-1 tag:0];
+        
     }
 }
 
@@ -42,7 +42,7 @@
 }
 
 -(void)writeAnswer:(NSString *)answer{
-    [_socket writeData:[answer dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:0];
+    [_socket writeData:[answer dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:3];
 }
 
 /**
@@ -53,13 +53,22 @@
     self.connected = true;
     self.connecting = false;
     [_delegate didConnect];
+    [_socket readDataToData:[@"\n" dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:5];
+}
+
+-(void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err{
+    [_delegate didDisconnect];
+    self.connecting = false;
+    self.connected = false;
 }
 
 - (void)socket:(GCDAsyncSocket *)sender didReadData:(NSData *)data withTag:(long)tag
 {
-    if (tag == 0)
+    if (tag == 5)
     {
-        [_delegate didReceiveCalculation:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+        NSString *calcString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        [_delegate didReceiveCalculation:calcString];
+        [_socket readDataToData:[@"\n" dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:5];
     }
 }
 

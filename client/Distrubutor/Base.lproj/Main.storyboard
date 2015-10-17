@@ -17,11 +17,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xPj-Pr-qo3">
-                                <rect key="frame" x="270.5" y="285" width="59" height="30"/>
+                                <rect key="frame" x="271" y="285" width="59" height="30"/>
                                 <animations/>
                                 <state key="normal" title="Connect"/>
                                 <connections>
-                                    <action selector="openconnection:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mzg-T9-92G"/>
+                                    <action selector="openconnection:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gN7-Ez-XrE"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -32,9 +32,13 @@
                             <constraint firstItem="xPj-Pr-qo3" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="SZl-Qg-dhv"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="connectButton" destination="xPj-Pr-qo3" id="vGY-Dn-bOL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="245" y="317"/>
         </scene>
     </scenes>
 </document>

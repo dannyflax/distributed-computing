@@ -3,7 +3,7 @@ import asyncore
 import socket
 import Tkinter
 import threading
-import decimal
+from decimal import Decimal
 import time
 
 class simpleapp_tk(Tkinter.Tk):
@@ -70,7 +70,7 @@ class EchoHandler(asyncore.dispatcher_with_send):
         self.server = server
 
     def handle_read(self):
-        data = self.recv(8192)
+        data = self.recv(4092)
         if self.calculating:
             self.server.handlerFinishedCalculating(self,data)
         
@@ -117,15 +117,18 @@ class EchoServer(asyncore.dispatcher):
             self.calcFinished()
 
     def distributeCalculations(self):
+
     	if(self.connections > 0):
 
+    		self.calcResult = 0
     		self.calcNumber = 0
     		self.calculating = True
 
-    		if(True):
+    		if(True): # This distribution gives rotating assignments of n
     			for x in range(0, len(self.connectionHandlers)):
-    				self.connectionHandlers[x].send(str(x) + ":" + str(len(self.connectionHandlers)) + ":" + self.seriesRange)
-    		else:
+    				self.connectionHandlers[x].send(str(x) + ":" + str(len(self.connectionHandlers)) + ":" + str(self.seriesRange)+"\n")
+    				self.connectionHandlers[x].calculating = True
+    		else: # This distribution gives consecutive ranges
 	    		increment = self.seriesRange / len(self.connectionHandlers)
 	    		modResult = self.seriesRange % len(self.connectionHandlers)
 
@@ -148,7 +151,7 @@ class EchoServer(asyncore.dispatcher):
 	    			counter = counter + 1
     	else:
     		self.calcFinished()
-    	print "DistributeCalculations completed"
+    	print "Distribute Calculations completed"
 
 
 
@@ -168,11 +171,12 @@ class EchoServer(asyncore.dispatcher):
         # Check to see if the data is a valid decimal
 
         try:
-        	castedData = decimal(data)
-        	self.calcResult = self.calcResult + decimal(data)
+        	castedData = Decimal(data)
+    		self.calcResult = self.calcResult + Decimal(data)
         except:
-        	print "Handler returned " + str(data) + " for some reason."
-
+        	print "Failure to parse returned output."
+    	
+        
         if self.calcNumber == self.connections:
             self.calcFinished()
             

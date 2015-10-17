@@ -28,6 +28,24 @@
     [self disconnectconnection];
 }
 
+-(NSString *)performCalculation:(NSString *)data{
+    if(![data containsString:@":"]){
+        return @"Error";
+    }
+    else{
+        NSArray *arr = [data componentsSeparatedByString:@":"];
+        long lBound = [[arr objectAtIndex:0] integerValue];
+        long uBound = [[arr objectAtIndex:1] integerValue];
+        
+        //We may want to switch to double later
+        float sum = 0;
+        for (long i = lBound; i<=uBound; i++) {
+            sum+=pow(.2, i);
+        }
+        return [NSString stringWithFormat:@"%f",sum];
+    }
+}
+
 - (void) disconnectconnection {
     printf("check");
 }

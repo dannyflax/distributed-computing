@@ -11,6 +11,7 @@
 @interface ViewController : UIViewController <TCP_Delegate>
 {
     TCP_Handler *tcpHandler;
+    IBOutlet UIButton *connectButton;
 }
 @end
 

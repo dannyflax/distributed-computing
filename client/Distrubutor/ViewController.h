@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface ViewController : UIViewController
-
-
+#import "TCP_Handler.h"
+@interface ViewController : UIViewController <TCP_Delegate>
+{
+    TCP_Handler *tcpHandler;
+}
 @end
 

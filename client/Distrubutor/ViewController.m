@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    tcpHandler = [[TCP_Handler alloc] initWithDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -25,11 +25,50 @@
 }
 
 - (IBAction)openconnection:(UIButton *)sender {
-    [self disconnectconnection];
+    if (!tcpHandler.connecting) {
+        if (!tcpHandler.connected) {
+            [tcpHandler connect];
+        }
+        else{
+            [tcpHandler disconnect];
+        }
+    }
 }
 
-- (void) disconnectconnection {
-    printf("check");
+-(NSString *)performCalculation:(NSString *)data{
+    if(![data containsString:@":"]){
+        return @"Error";
+    }
+    else{
+        NSArray *arr = [data componentsSeparatedByString:@":"];
+        long lBound = [[arr objectAtIndex:0] integerValue];
+        long uBound = [[arr objectAtIndex:1] integerValue];
+        
+        double sum = 0;
+        for (long i = lBound; i<=uBound; i++) {
+            sum+=pow((132.0/137.0), i);
+        }
+        return [NSString stringWithFormat:@"%.40f",sum];
+    }
+}
+
+/** TCP_Delegate Methods **/
+
+-(void)didConnect{
+    NSLog(@"CONNECTED");
+}
+
+-(void)didDisconnect{
+    NSLog(@"DISCONNECTED");
+}
+
+-(void)connectFailed{
+    NSLog(@"FAILED TO CONNECT");
+}
+
+-(void)didReceiveCalculation:(NSString *)calculation{
+    NSString *response = [self performCalculation:calculation];
+    [tcpHandler writeAnswer:response];
 }
 
 @end

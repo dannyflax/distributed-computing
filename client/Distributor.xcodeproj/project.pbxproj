@@ -58,6 +58,7 @@
 		91E7EE9F857ABBA838C88EFF /* Pods-Distributor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Distributor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Distributor/Pods-Distributor.debug.xcconfig"; sourceTree = "<group>"; };
 		EF3D7E411BD22428008B7330 /* TCP_Handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCP_Handler.h; sourceTree = "<group>"; };
 		EF3D7E421BD22428008B7330 /* TCP_Handler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCP_Handler.m; sourceTree = "<group>"; };
+		EFC7522C1BD2664B0013AB0F /* TCP_Delegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCP_Delegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +172,7 @@
 		EF3D7E401BD22409008B7330 /* Network Handlers */ = {
 			isa = PBXGroup;
 			children = (
+				EFC7522C1BD2664B0013AB0F /* TCP_Delegate.h */,
 				EF3D7E411BD22428008B7330 /* TCP_Handler.h */,
 				EF3D7E421BD22428008B7330 /* TCP_Handler.m */,
 			);

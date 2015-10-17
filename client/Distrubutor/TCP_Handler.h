@@ -7,7 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@interface TCP_Handler : NSObject
-
+#import "CocoaAsyncSocket.h"
+#import "TCP_Delegate.h"
+@interface TCP_Handler : NSObject <GCDAsyncSocketDelegate>
+{
+    
+}
+-(void)connect;
+-(void)disconnect;
+-(void)writeAnswer:(NSString *)answer;
+-(TCP_Handler *)initWithDelegate:(id<TCP_Delegate>)delegate;
+@property (nonatomic) BOOL connected;
+@property (nonatomic) BOOL connecting;
+@property (nonatomic, strong) id<TCP_Delegate> delegate;
+@property (nonatomic, strong) GCDAsyncSocket *socket;
 @end

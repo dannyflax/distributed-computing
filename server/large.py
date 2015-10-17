@@ -5,6 +5,7 @@ import Tkinter
 import threading
 from decimal import Decimal
 import time
+import math
 
 class simpleapp_tk(Tkinter.Tk):
 
@@ -93,6 +94,7 @@ class EchoServer(asyncore.dispatcher):
 		self.calculating = False
 		self.calcResult = 0
 		self.startTime = time.time()
+		self.numberToCheck = 1000001
 
 	def handle_accept(self):
 		pair = self.accept()
@@ -106,21 +108,9 @@ class EchoServer(asyncore.dispatcher):
 			self.connectionHandlers.append(handler)
 			self.connections = self.connections + 1
 
-	# DEPRECATED
-	def startCalculating(self):
-		if(self.connections > 0):
-			self.calcNumber = 0
-			self.calculating = True
-			for handler in self.connectionHandlers:
-				handler.calculating = True
-				handler.send("hey")
-		else:
-			self.calcFinished()
-
 	def distributeCalculations(self):
-
 		self.startTime = time.time()
-		self.calcResult = 0
+		self.calcResult = 1
 		self.calcNumber = 0
 		self.calculating = True
 
@@ -128,7 +118,7 @@ class EchoServer(asyncore.dispatcher):
 			# This distribution gives rotating assignments of n
 			if self.connections > 0:
 				for x in range(0, len(self.connectionHandlers)):
-					self.connectionHandlers[x].send(str(x) + ":" + str(len(self.connectionHandlers)) + ":" + str(self.seriesRange)+"\n")
+					self.connectionHandlers[x].send(str(x) + ":" + str(self.connections) + ":" + str(int(math.sqrt(self.numberToCheck)))+"\n")
 					self.connectionHandlers[x].calculating = True
 			else:
 				#Compute
@@ -166,6 +156,7 @@ class EchoServer(asyncore.dispatcher):
 		self.calculating = False
 		for handler in self.connectionHandlers:
 			handler.calculating = False
+			handler.send("STOP\n")
 
 	def handlerDisconnected(self,handler):
 		self.connectionHandlers.remove(handler)
@@ -175,16 +166,18 @@ class EchoServer(asyncore.dispatcher):
 		self.calcNumber = self.calcNumber + 1
 		handler.calculating = False
 
-		# Check to see if the data is a valid decimal
-
 		try:
-			castedData = Decimal(data)
-			self.calcResult = self.calcResult + Decimal(data)
+			result = Decimal(data)
 		except:
 			print "Failure to parse device output."
 		
-		
+		if result == 0:
+			self.calcResult = 0
+			self.stopCalculating()
+			self.calcFinished()
+
 		if self.calcNumber == self.connections:
+			self.calcResult = self.numberToCheck
 			self.calcFinished()
 			
 	def calcFinished(self):

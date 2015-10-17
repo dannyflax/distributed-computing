@@ -16,9 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    
-    NSLog(@"%@",[self performCalculation:@"0:55000"]);
+    tcpHandler = [[TCP_Handler alloc] initWithDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -27,7 +25,14 @@
 }
 
 - (IBAction)openconnection:(UIButton *)sender {
-    [self disconnectconnection];
+    if (!tcpHandler.connecting) {
+        if (!tcpHandler.connected) {
+            [tcpHandler connect];
+        }
+        else{
+            [tcpHandler disconnect];
+        }
+    }
 }
 
 -(NSString *)performCalculation:(NSString *)data{
@@ -47,8 +52,23 @@
     }
 }
 
-- (void) disconnectconnection {
-    printf("check");
+/** TCP_Delegate Methods **/
+
+-(void)didConnect{
+    NSLog(@"CONNECTED");
+}
+
+-(void)didDisconnect{
+    NSLog(@"DISCONNECTED");
+}
+
+-(void)connectFailed{
+    NSLog(@"FAILED TO CONNECT");
+}
+
+-(void)didReceiveCalculation:(NSString *)calculation{
+    NSString *response = [self performCalculation:calculation];
+    [tcpHandler writeAnswer:response];
 }
 
 @end

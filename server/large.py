@@ -118,29 +118,34 @@ class EchoServer(asyncore.dispatcher):
 
     def distributeCalculations(self):
     	if(self.connections > 0):
+
     		self.calcNumber = 0
     		self.calculating = True
 
-    		increment = self.seriesRange / len(self.connectionHandlers)
-    		modResult = self.seriesRange % len(self.connectionHandlers)
+    		if(True):
+    			for x in range(0, len(self.connectionHandlers)):
+    				self.connectionHandlers[x].send(str(x) + ":" + str(len(self.connectionHandlers)) + ":" + self.seriesRange)
+    		else:
+	    		increment = self.seriesRange / len(self.connectionHandlers)
+	    		modResult = self.seriesRange % len(self.connectionHandlers)
 
-    		distributedCount = 0
-    		counter = 0
+	    		distributedCount = 0
+	    		counter = 0
 
-    		while(distributedCount < self.seriesRange):
-    			increase = increment
-    			if(counter < modResult):
-    				increase = increase + 1
+	    		while(distributedCount < self.seriesRange):
+	    			increase = increment
+	    			if(counter < modResult):
+	    				increase = increase + 1
 
-    			lowerHalf = distributedCount
-    			if(distributedCount != 0):
-    				lowerHalf = lowerHalf + 1
+	    			lowerHalf = distributedCount
+	    			if(distributedCount != 0):
+	    				lowerHalf = lowerHalf + 1
 
-    			self.connectionHandlers[counter].calculating = True
-    			self.connectionHandlers[counter].send(str(lowerHalf) + ":" + str(distributedCount + increase))
-    			print str(lowerHalf) + ":" + str(distributedCount + increase)
-    			distributedCount += increase
-    			counter = counter + 1
+	    			self.connectionHandlers[counter].calculating = True
+	    			self.connectionHandlers[counter].send(str(lowerHalf) + ":" + str(distributedCount + increase))
+	    			print str(lowerHalf) + ":" + str(distributedCount + increase)
+	    			distributedCount += increase
+	    			counter = counter + 1
     	else:
     		self.calcFinished()
     	print "DistributeCalculations completed"

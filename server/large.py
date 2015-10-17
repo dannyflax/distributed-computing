@@ -20,7 +20,7 @@ class simpleapp_tk(Tkinter.Tk):
         self.button.grid(column=1,row=0)
         self.label = Tkinter.Label(self,text="")
         self.label.grid(column=2,row=0)
-        self.server = EchoServer('localhost', 8080)
+        self.server = EchoServer('10.186.105.175', 8080)
 
     def OnButtonClick(self):
         print "Starting server..."
@@ -128,13 +128,21 @@ class EchoServer(asyncore.dispatcher):
     		#for(i = 0; distributedCount < self.seriesRange; i++):
     		while(distributedCount < self.seriesRange):
     			increase = increment
-    			if(i < modResult):
+    			if(counter < modResult):
     				increase = increase + 1
-    			self.connectionHandlers(counter).calculating = True
-    			self.connectionHandlers(counter).send(str(distributedCount) + ":" + str(distributedCount + increase))
+
+    			lowerHalf = distributedCount
+    			if(distributedCount != 0):
+    				lowerHalf = lowerHalf + 1
+
+    			self.connectionHandlers[counter].calculating = True
+    			self.connectionHandlers[counter].send(str(lowerHalf) + ":" + str(distributedCount + increase))
+    			print str(lowerHalf) + ":" + str(distributedCount + increase)
     			distributedCount += increase
+    			counter = counter + 1
     	else:
     		self.calcFinished()
+    	print "DistributeCalculations completed"
 
 
 

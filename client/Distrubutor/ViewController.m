@@ -17,6 +17,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     tcpHandler = [[TCP_Handler alloc] initWithDelegate:self];
+    [connectButton setTitle:@"My Title" forState:UIControlStateNormal];
+    UIButton *mySwitch = [[UIButton alloc] initWithFrame:CGRectMake(130, 235, 0, 0)];
+    [mySwitch addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:mySwitch];
+    
+}
+
+- (void)changeSwitch:(id)sender{
+    
+    if([sender isOn]){
+        NSLog(@"Connect");
+    } else{
+        NSLog(@"Disconnect");
+    }
 }
 
 - (void)didReceiveMemoryWarning {

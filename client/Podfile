@@ -2,7 +2,8 @@
 # platform :ios, '6.0'
 
 target 'Distrubutor' do
-
+use_frameworks! # Add this if you are targeting iOS 8+ or using Swift
+pod 'CocoaAsyncSocket' 
 end
 
 target 'DistrubutorTests' do

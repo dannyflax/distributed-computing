@@ -41,14 +41,16 @@
     }
     else{
         NSArray *arr = [data componentsSeparatedByString:@":"];
-        long lBound = [[arr objectAtIndex:0] integerValue];
-        long uBound = [[arr objectAtIndex:1] integerValue];
-        
+        long indexOfDevice = [[arr objectAtIndex:0] integerValue];
+        long deviceCount = [[arr objectAtIndex:1] integerValue];
+        long uBound = [[arr objectAtIndex:2] integerValue];
+        NSLog(@"deviceCount: %ld",deviceCount);
         double sum = 0;
-        for (long i = lBound; i<=uBound; i++) {
-            sum+=pow((132.0/137.0), i);
+        for (long i = indexOfDevice; i <= uBound; i+=deviceCount) {
+            sum+=1;
         }
-        return [NSString stringWithFormat:@"%.40f",sum];
+        
+        return [NSString stringWithFormat:@"%f",sum];
     }
 }
 

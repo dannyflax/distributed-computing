@@ -118,7 +118,7 @@ class EchoServer(asyncore.dispatcher):
 			# This distribution gives rotating assignments of n
 			if self.connections > 0:
 				for x in range(0, len(self.connectionHandlers)):
-					self.connectionHandlers[x].send(str(x) + ":" + str(self.connections) + ":" + str(int(math.sqrt(self.numberToCheck)))+"\n")
+					self.connectionHandlers[x].send(str(x) + ":" + str(self.connections) + ":" + str(self.numberToCheck)+"\n")
 					self.connectionHandlers[x].calculating = True
 			else:
 				#Compute

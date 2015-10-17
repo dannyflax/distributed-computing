@@ -17,6 +17,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    NSLog(@"%@",[self performCalculation:@"0:55000"]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -37,12 +39,11 @@
         long lBound = [[arr objectAtIndex:0] integerValue];
         long uBound = [[arr objectAtIndex:1] integerValue];
         
-        //We may want to switch to double later
-        float sum = 0;
+        double sum = 0;
         for (long i = lBound; i<=uBound; i++) {
-            sum+=pow(.2, i);
+            sum+=pow((132.0/137.0), i);
         }
-        return [NSString stringWithFormat:@"%f",sum];
+        return [NSString stringWithFormat:@"%.40f",sum];
     }
 }
 

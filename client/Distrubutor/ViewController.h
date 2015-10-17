@@ -12,6 +12,7 @@
 {
     TCP_Handler *tcpHandler;
     IBOutlet UIButton *connectButton;
+    bool running;
 }
 @end
 

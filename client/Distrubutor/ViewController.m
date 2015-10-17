@@ -62,7 +62,10 @@
 }
 
 -(NSString *)performCalculation:(NSString *)data{
-    if(![data containsString:@":"]){
+    if([data isEqualToString:@"STOP"]){
+        return @"";
+    }
+    else if(![data containsString:@":"]){
         return @"Error";
     }
     else{
@@ -74,7 +77,7 @@
 
         NSLog(@"deviceCount: %ld",deviceCount);
         int prime = 0;
-        for (long i = indexOfDevice; i <= uBound && prime; i+=deviceCount) {
+        for (long i = indexOfDevice; i <= uBound && prime && running; i+=deviceCount) {
             prime = (numToCheck%i == 0);
         }
         return [NSString stringWithFormat:@"%i",prime];
@@ -99,8 +102,10 @@
 }
 
 -(void)didReceiveCalculation:(NSString *)calculation{
+    running = true;
     NSString *response = [self performCalculation:calculation];
-    [tcpHandler writeAnswer:response];
+    if(running)
+        [tcpHandler writeAnswer:response];
 }
 
 @end

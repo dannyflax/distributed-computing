@@ -17,7 +17,7 @@ class simpleapp_tk(Tkinter.Tk):
 
 	def initialize(self):
 		self.grid()
-		self.button = Tkinter.Button(self,text="Click me !",command=self.OnButtonClick)
+		self.button = Tkinter.Button(self,text="Click me!",command=self.OnButtonClick)
 		self.button.grid(column=1,row=0)
 		self.label = Tkinter.Label(self,text="")
 		self.label.grid(column=2,row=0)
@@ -56,7 +56,7 @@ class simpleapp_tk(Tkinter.Tk):
 		self.destroy()
 
 	def calculate(self):
-		print "gonna calculate eventually"
+		print "Beginning calculations..."
 		#self.server.startCalculating()
 		self.server.distributeCalculations();
 
@@ -87,17 +87,18 @@ class EchoServer(asyncore.dispatcher):
 		self.set_reuse_addr()
 		self.bind((host, port))
 		self.listen(5)
-		self.seriesRange = 1000000000						# the "n" argument in the geometric series
+		self.seriesRange = 10000						# the "n" argument in the geometric series
 		self.connections = 0												# amount of devices connected to server
 		self.connectionHandlers = []
 		self.calculating = False
 		self.calcResult = 0
+		self.startTime = time.time()
 
 	def handle_accept(self):
 		pair = self.accept()
 		if pair is not None:
 			sock, addr = pair
-			print 'Incoming connection from %s' % repr(addr)
+			print 'Incoming connection from %s.' % repr(addr)
 			handler = EchoHandler(sock,self)
 			handler.address = addr
 			handler.calculating = False
@@ -118,6 +119,7 @@ class EchoServer(asyncore.dispatcher):
 
 	def distributeCalculations(self):
 
+		self.startTime = time.time()
 		self.calcResult = 0
 		self.calcNumber = 0
 		self.calculating = True
@@ -156,7 +158,7 @@ class EchoServer(asyncore.dispatcher):
 		# 		print str(lowerHalf) + ":" + str(distributedCount + increase)
 		# 		distributedCount += increase
 		# 		counter = counter + 1
-		print "Distribute Calculations completed"
+		print "Device tasks assigned..."
 
 
 
@@ -179,7 +181,7 @@ class EchoServer(asyncore.dispatcher):
 			castedData = Decimal(data)
 			self.calcResult = self.calcResult + Decimal(data)
 		except:
-			print "Failure to parse returned output."
+			print "Failure to parse device output."
 		
 		
 		if self.calcNumber == self.connections:
@@ -189,6 +191,8 @@ class EchoServer(asyncore.dispatcher):
 		self.calculating = False
 		print "Result: "
 		print self.calcResult
+		print "Time Elapsed: "
+		print time.time() - self.startTime
 
 if __name__ == "__main__":
 	app = simpleapp_tk(None)

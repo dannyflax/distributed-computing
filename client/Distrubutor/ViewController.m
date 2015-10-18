@@ -62,7 +62,6 @@
 }
 
 -(NSString *)performCalculation:(NSString *)data{
-    running = true;
     if(![data containsString:@":"]){
         return @"Error";
     }
@@ -70,15 +69,14 @@
         NSArray *arr = [data componentsSeparatedByString:@":"];
         long indexOfDevice = [[arr objectAtIndex:0] integerValue];
         long deviceCount = [[arr objectAtIndex:1] integerValue];
-        long numToCheck = [[arr objectAtIndex:2] integerValue];
-        long uBound = sqrt(numToCheck);
-
+        long long numToCheck = [[arr objectAtIndex:2] longLongValue];
+        long long uBound = sqrt(numToCheck);
         NSLog(@"deviceCount: %ld",deviceCount);
         int prime = 1;
-        for (long i = indexOfDevice; i <= uBound && prime && running; i+=deviceCount) {
+        for (long long i = indexOfDevice; i <= uBound && prime && running; i+=deviceCount) {
             prime = (numToCheck%i != 0);
         }
-        return [NSString stringWithFormat:@"%ld:%i\n",numToCheck,prime];
+        return [NSString stringWithFormat:@"%@:%i\n",[arr objectAtIndex:2],prime];
     }
 }
 
@@ -100,7 +98,6 @@
 }
 
 -(void)didReceiveCalculation:(NSString *)calculation{
-    running = false;
     NSString *response = [self performCalculation:calculation];
     [tcpHandler writeAnswer:response];
 }

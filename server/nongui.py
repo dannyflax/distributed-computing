@@ -1,59 +1,44 @@
-##
 import asyncore
 import socket
 import Tkinter
 import threading
 from decimal import Decimal
 import time
-import math
-import string
 
-class simpleapp_tk(Tkinter.Tk):
+class App():
+	def __init__(self):
+		self.initialise()
 
+	def initialise(self):
+		self.server = EchoServer('10.186.38.214', 8080)
+		self.initialiseThread()
+		self.action = False;
 
-
-	def __init__(self,parent):
-		Tkinter.Tk.__init__(self,parent)
-		self.parent = parent
-		self.initialize()
-
-	def initialize(self):
-		self.grid()
-		self.button = Tkinter.Button(self,text="Click me!",command=self.OnButtonClick)
-		self.button.grid(column=1,row=0)
-		self.label = Tkinter.Label(self,text="")
-		self.label.grid(column=2,row=0)
-		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		s.connect(("gmail.com",80))
-		ip = s.getsockname()[0]
-		s.close()
-		self.server = EchoServer(ip, 8080)
-
-	def OnButtonClick(self):
-		print "Starting server..."
-		self.thread1 = threading.Thread(target=self.workerThread1)
-		self.thread1.start() 
+	def initialiseThread(self):
+		print "Starting server connection..."
+		self.thredOne = threading.Thread(target=self.workerThreadOne)
+		self.thredOne.start()
 
 		self.t2_stop = threading.Event()
 		self.thread2 = threading.Thread(target=self.serverCheckThread, args=(1,self.t2_stop))
 		self.thread2.start()
 
-		self.button.configure(text = "Calculate", command=self.calculate)
-
-
-	def workerThread1(self):
+	def workerThreadOne(self):
 		asyncore.loop()
 
 	def serverCheckThread(self,a,t2_stop):
 		while not t2_stop.is_set():
-			self.label.configure(text="%d connections"%(self.server.connections)) 
 			if self.server.calculating:
-				self.button.configure(text = "Stop Calculating", command=self.stopCalculating)
+				#print ("Number of connections ",self.server.connections)
+				x = raw_input("Stop Calculating ?")
+				if(x == 'yes'):
+					self.stopCalculating()
 			else:
-				self.button.configure(text = "Calculate", command=self.calculate)
+				print ("Number of connections ",(self.server.connections))
+				x = raw_input("Start Calculating ?")
+				if(x == 'yes'):
+					self.calculate()
 			time.sleep(1)
-
-
 
 	def onClosing(self):
 		print "Closing server"
@@ -69,7 +54,6 @@ class simpleapp_tk(Tkinter.Tk):
 	def stopCalculating(self):
 		self.server.stopCalculating()
 
-
 class EchoHandler(asyncore.dispatcher_with_send):
 	def __init__(self, sock, server):
 		asyncore.dispatcher_with_send.__init__(self,sock)
@@ -78,19 +62,11 @@ class EchoHandler(asyncore.dispatcher_with_send):
 	def handle_read(self):
 		data = self.recv(4092)
 		if self.calculating:
-			dataChunks = string.split(data,"\n")
-			if len(dataChunks) > 2:
-				for i in range(0,len(dataChunks)-1):
-					self.server.handlerFinishedCalculating(self,dataChunks[i])	
-			else:
-				self.server.handlerFinishedCalculating(self,dataChunks[0])
+			self.server.handlerFinishedCalculating(self,data)
 		
 	def handle_close(self):
 		self.server.handlerDisconnected(self)
 		self.close()
-		self.server.stopCalculating()
-		self.server.distributeCalculations()
-
 
 class EchoServer(asyncore.dispatcher):
 
@@ -106,7 +82,6 @@ class EchoServer(asyncore.dispatcher):
 		self.calculating = False
 		self.calcResult = 0
 		self.startTime = time.time()
-		self.numberToCheck = 49573400000
 
 	def handle_accept(self):
 		pair = self.accept()
@@ -119,36 +94,36 @@ class EchoServer(asyncore.dispatcher):
 			handler.closed = False
 			self.connectionHandlers.append(handler)
 			self.connections = self.connections + 1
-		if self.calculating:
-			self.server.stopCalculating()
-			self.server.distributeCalculations()
+
+	# DEPRECATED
+	def startCalculating(self):
+		if(self.connections > 0):
+			self.calcNumber = 0
+			self.calculating = True
+			for handler in self.connectionHandlers:
+				handler.calculating = True
+				handler.send("hey")
+		else:
+			self.calcFinished()
 
 	def distributeCalculations(self):
+
 		self.startTime = time.time()
-		self.calcResult = 1
+		self.calcResult = 0
 		self.calcNumber = 0
 		self.calculating = True
 
 		if(True):
 			# This distribution gives rotating assignments of n
 			if self.connections > 0:
-				for x in range(0, self.connections):
-					self.connectionHandlers[x].send(str(x+2) + ":" + str(self.connections) + ":" + str(self.numberToCheck)+"\n")
+				for x in range(0, len(self.connectionHandlers)):
+					self.connectionHandlers[x].send(str(x) + ":" + str(len(self.connectionHandlers)) + ":" + str(self.seriesRange)+"\n")
 					self.connectionHandlers[x].calculating = True
 			else:
 				#Compute
-				
-				while self.calculating:
-					isPrime = True
-
-					x = 2
-					while isPrime and x <= int(math.sqrt(self.numberToCheck)):
-						isPrime = (self.numberToCheck%x != 0)	
-						x += 1
-
-					if isPrime:
-						print self.numberToCheck
-					self.numberToCheck = self.numberToCheck + 1
+				for x in range(0, self.seriesRange + 1):
+					self.calcResult = self.calcResult + 1
+				self.calcFinished()
 
 		# This distribution gives consecutive ranges
 
@@ -172,7 +147,7 @@ class EchoServer(asyncore.dispatcher):
 		# 		print str(lowerHalf) + ":" + str(distributedCount + increase)
 		# 		distributedCount += increase
 		# 		counter = counter + 1
-		# print "Device tasks assigned..."
+		print "Device tasks assigned..."
 
 
 
@@ -182,52 +157,31 @@ class EchoServer(asyncore.dispatcher):
 			handler.calculating = False
 
 	def handlerDisconnected(self,handler):
-		print handler
 		self.connectionHandlers.remove(handler)
 		self.connections = self.connections - 1
 
 	def handlerFinishedCalculating(self,handler,data):
-		# print "DATAAA"+data
+		self.calcNumber = self.calcNumber + 1
+		handler.calculating = False
+
+		# Check to see if the data is a valid decimal
+
+		try:
+			castedData = Decimal(data)
+			self.calcResult = self.calcResult + Decimal(data)
+		except:
+			print "Failure to parse device output."
 		
-
-		inputD = string.split(data,":")
-
-		num = inputD[0]
-		result = inputD[1]
-
-		if int(num) == self.numberToCheck:
-			self.calcNumber = self.calcNumber + 1
-			handler.calculating = False
-
-			try:
-				result = Decimal(result)
-			except:
-				print "Failure to parse device output."
-			
-			if result == 0:
-				# print "MOVED ON FROM COMPOSITE"
-				self.calcResult = 0
-				self.stopCalculating()
-				self.calcFinished()
-			else:
-				if self.calcNumber == self.connections:
-					# print "MOVED ON FROM PRIME"
-					self.calcResult = self.numberToCheck
-					self.calcFinished()
+		
+		if self.calcNumber == self.connections:
+			self.calcFinished()
 			
 	def calcFinished(self):
 		self.calculating = False
-		if not self.calcResult == 0:
-			print "Result: "
-			print self.calcResult
-			print "Time Elapsed: "
-			print time.time() - self.startTime
-		
-		self.numberToCheck = self.numberToCheck + 1
-		self.distributeCalculations()
+		print "Result: "
+		print self.calcResult
+		print "Time Elapsed: "
+		print time.time() - self.startTime
 
 if __name__ == "__main__":
-	app = simpleapp_tk(None)
-	app.title('my application')
-	app.protocol("WM_DELETE_WINDOW", app.onClosing)
-	app.mainloop()
+	app = App()

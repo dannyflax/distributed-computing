@@ -23,7 +23,11 @@ class simpleapp_tk(Tkinter.Tk):
 		self.button.grid(column=1,row=0)
 		self.label = Tkinter.Label(self,text="")
 		self.label.grid(column=2,row=0)
-		self.server = EchoServer('10.186.51.57', 8080)
+		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		s.connect(("gmail.com",80))
+		ip = s.getsockname()[0]
+		s.close()
+		self.server = EchoServer(ip, 8080)
 
 	def OnButtonClick(self):
 		print "Starting server..."
@@ -102,7 +106,7 @@ class EchoServer(asyncore.dispatcher):
 		self.calculating = False
 		self.calcResult = 0
 		self.startTime = time.time()
-		self.numberToCheck = 41
+		self.numberToCheck = 49573400000
 
 	def handle_accept(self):
 		pair = self.accept()
@@ -133,9 +137,18 @@ class EchoServer(asyncore.dispatcher):
 					self.connectionHandlers[x].calculating = True
 			else:
 				#Compute
-				for x in range(0, self.seriesRange + 1):
-					self.calcResult = self.calcResult + 1
-				self.calcFinished()
+				
+				while self.calculating:
+					isPrime = True
+
+					x = 2
+					while isPrime and x <= int(math.sqrt(self.numberToCheck)):
+						isPrime = (self.numberToCheck%x != 0)	
+						x += 1
+
+					if isPrime:
+						print self.numberToCheck
+					self.numberToCheck = self.numberToCheck + 1
 
 		# This distribution gives consecutive ranges
 

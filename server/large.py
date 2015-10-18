@@ -9,56 +9,55 @@ import string
 
 class App():
 
-	def __init__(self,parent):
+	def __init__(self):
 		self.initialize()
 
 	def initialize(self):
-		self.grid()
-		self.button = Tkinter.Button(self,text="Click me!",command=self.OnButtonClick)
-		self.button.grid(column=1,row=0)
-		self.label = Tkinter.Label(self,text="")
-		self.label.grid(column=2,row=0)
 		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		s.connect(("gmail.com",80))
 		ip = s.getsockname()[0]
 		s.close()
 		self.server = EchoServer(ip, 8080)
 
-	def OnButtonClick(self):
-		print "Starting server..."
-		self.thread1 = threading.Thread(target=self.workerThread1)
-		self.thread1.start() 
+		self.action = False
+
+		self.initialiseThread()
+
+	def initialiseThread(self):
+		print "Starting server connection..."
+		self.thredOne = threading.Thread(target=self.workerThreadOne)
+		self.thredOne.start()
 
 		self.t2_stop = threading.Event()
 		self.thread2 = threading.Thread(target=self.serverCheckThread, args=(1,self.t2_stop))
 		self.thread2.start()
 
-		self.button.configure(text = "Calculate", command=self.calculate)
-
-
-	def workerThread1(self):
+	def workerThreadOne(self):
 		asyncore.loop()
 
 	def serverCheckThread(self,a,t2_stop):
 		while not t2_stop.is_set():
-			self.label.configure(text="%d connections"%(self.server.connections)) 
 			if self.server.calculating:
-				self.button.configure(text = "Stop Calculating", command=self.stopCalculating)
+				#print ("Number of connections ",self.server.connections)
+				x = raw_input("Stop Calculating ?")
+				if(x == 'yes'):
+					self.stopCalculating()
 			else:
-				self.button.configure(text = "Calculate", command=self.calculate)
+				print ("Number of connections ",(self.server.connections))
+				x = raw_input("Start Calculating ?")
+				if(x == 'yes'):
+					self.calculate()
+				elif(x == 'quit'):
+					self.onClosing()
 			time.sleep(1)
-
-
 
 	def onClosing(self):
 		print "Closing server"
 		self.t2_stop.set()
 		asyncore.close_all()
-		self.destroy()
 
 	def calculate(self):
 		print "Beginning calculations..."
-		#self.server.startCalculating()
 		self.server.distributeCalculations();
 
 	def stopCalculating(self):
@@ -101,7 +100,8 @@ class EchoServer(asyncore.dispatcher):
 		self.calculating = False
 		self.calcResult = 0
 		self.startTime = time.time()
-		self.numberToCheck = 49573400000
+		self.baseNumber = 49573400000
+		self.numberToCheck = self.baseNumber
 
 	def handle_accept(self):
 		pair = self.accept()
@@ -172,6 +172,7 @@ class EchoServer(asyncore.dispatcher):
 
 
 	def stopCalculating(self):
+		self.numberToCheck = self.baseNumber
 		self.calculating = False
 		for handler in self.connectionHandlers:
 			handler.calculating = False

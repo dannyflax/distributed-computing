@@ -42,6 +42,7 @@ class App():
 				x = raw_input("Stop Calculating ?")
 				if(x == 'yes'):
 					self.stopCalculating()
+					self.server.numberToCheck = self.server.baseNumber
 			else:
 				print ("Number of connections ",(self.server.connections))
 				x = raw_input("Start Calculating ?")
@@ -172,7 +173,6 @@ class EchoServer(asyncore.dispatcher):
 
 
 	def stopCalculating(self):
-		self.numberToCheck = self.baseNumber
 		self.calculating = False
 		for handler in self.connectionHandlers:
 			handler.calculating = False

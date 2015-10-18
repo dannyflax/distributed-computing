@@ -73,7 +73,7 @@
         long long uBound = sqrt(numToCheck);
         NSLog(@"deviceCount: %ld",deviceCount);
         int prime = 1;
-        for (long long i = indexOfDevice; i <= uBound && prime && running; i+=deviceCount) {
+        for (long long i = indexOfDevice; i <= uBound && prime; i+=deviceCount) {
             prime = (numToCheck%i != 0);
         }
         return [NSString stringWithFormat:@"%@:%i\n",[arr objectAtIndex:2],prime];
@@ -98,6 +98,7 @@
 }
 
 -(void)didReceiveCalculation:(NSString *)calculation{
+    running = true;
     NSString *response = [self performCalculation:calculation];
     [tcpHandler writeAnswer:response];
 }

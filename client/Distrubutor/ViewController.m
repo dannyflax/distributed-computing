@@ -69,14 +69,14 @@
         NSArray *arr = [data componentsSeparatedByString:@":"];
         long indexOfDevice = [[arr objectAtIndex:0] integerValue];
         long deviceCount = [[arr objectAtIndex:1] integerValue];
-        long uBound = [[arr objectAtIndex:2] integerValue];
+        long long numToCheck = [[arr objectAtIndex:2] longLongValue];
+        long long uBound = sqrt(numToCheck);
         NSLog(@"deviceCount: %ld",deviceCount);
-        double sum = 0;
-        for (long i = indexOfDevice; i <= uBound; i+=deviceCount) {
-            sum+=1;
+        int prime = 1;
+        for (long long i = indexOfDevice; i <= uBound && prime && running; i+=deviceCount) {
+            prime = (numToCheck%i != 0);
         }
-        
-        return [NSString stringWithFormat:@"%f",sum];
+        return [NSString stringWithFormat:@"%@:%i\n",[arr objectAtIndex:2],prime];
     }
 }
 

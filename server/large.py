@@ -14,6 +14,8 @@ class App():
 
 	def initialize(self):
 		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			
+	
 		s.connect(("gmail.com",80))
 		ip = s.getsockname()[0]
 		s.close()
@@ -101,7 +103,7 @@ class EchoServer(asyncore.dispatcher):
 		self.calculating = False
 		self.calcResult = 0
 		self.startTime = time.time()
-		self.baseNumber = 49573400000
+		self.baseNumber = 922337203685477
 		self.numberToCheck = self.baseNumber
 
 	def handle_accept(self):
@@ -219,7 +221,7 @@ class EchoServer(asyncore.dispatcher):
 			print "Time Elapsed: "
 			print time.time() - self.startTime
 		
-		self.numberToCheck = self.numberToCheck + 1
+		self.numberToCheck = self.numberToCheck + 2
 		self.distributeCalculations()
 
 if __name__ == "__main__":

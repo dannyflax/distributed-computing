@@ -71,9 +71,11 @@
         long deviceCount = [[arr objectAtIndex:1] integerValue];
         long long numToCheck = [[arr objectAtIndex:2] longLongValue];
         long long uBound = sqrt(numToCheck);
-        NSLog(@"deviceCount: %ld",deviceCount);
+        
+        long long pSize = uBound / deviceCount;
+        
         int prime = 1;
-        for (long long i = indexOfDevice; i <= uBound && prime; i+=deviceCount) {
+        for (long long i = (long long)MAX(2,pSize*indexOfDevice); i <= (pSize)*(1+indexOfDevice) && prime; i++) {
             prime = (numToCheck%i != 0);
         }
         return [NSString stringWithFormat:@"%@:%i\n",[arr objectAtIndex:2],prime];

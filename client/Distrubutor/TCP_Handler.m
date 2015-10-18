@@ -8,7 +8,7 @@
 
 #import "TCP_Handler.h"
 
-#define HOST_IP "10.0.0.3"
+#define HOST_IP "104.215.93.117"
 #define HOST_PORT 8080
 
 @implementation TCP_Handler

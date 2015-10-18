@@ -1,20 +1,15 @@
 ##
 import asyncore
 import socket
-import Tkinter
 import threading
 from decimal import Decimal
 import time
 import math
 import string
 
-class simpleapp_tk(Tkinter.Tk):
-
-
+class App():
 
 	def __init__(self,parent):
-		Tkinter.Tk.__init__(self,parent)
-		self.parent = parent
 		self.initialize()
 
 	def initialize(self):
@@ -227,7 +222,4 @@ class EchoServer(asyncore.dispatcher):
 		self.distributeCalculations()
 
 if __name__ == "__main__":
-	app = simpleapp_tk(None)
-	app.title('my application')
-	app.protocol("WM_DELETE_WINDOW", app.onClosing)
-	app.mainloop()
+	app = App()

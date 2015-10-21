@@ -10,7 +10,7 @@ class App():
 		self.initialise()
 
 	def initialise(self):
-		self.server = EchoServer('10.186.38.214', 8080)
+		self.server = EchoServer('localhost', 8080)
 		self.initialiseThread()
 		self.action = False;
 

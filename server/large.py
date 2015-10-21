@@ -133,7 +133,6 @@ class EchoServer(asyncore.dispatcher):
 					self.connectionHandlers[x].calculating = True
 			else:
 				#Compute
-				
 				while self.calculating:
 					isPrime = True
 
@@ -170,8 +169,6 @@ class EchoServer(asyncore.dispatcher):
 		# 		counter = counter + 1
 		# print "Device tasks assigned..."
 
-
-
 	def stopCalculating(self):
 		self.calculating = False
 		for handler in self.connectionHandlers:
@@ -184,7 +181,6 @@ class EchoServer(asyncore.dispatcher):
 
 	def handlerFinishedCalculating(self,handler,data):
 		# print "DATAAA"+data
-		
 
 		inputD = string.split(data,":")
 

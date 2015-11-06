@@ -35,10 +35,12 @@ You can check out a demonstration video [here](http://www.youtube.com/watch?v=S0
 ## Credits
 Project created by:
 
-Ben Stammen
+- Ben Stammen
 
-Danny Flax
+- Danny Flax
 
-Taha Topiwala
+- Taha Topiwala
 
-Sagnik Aditha
+- Sagnik Aditha
+
+A special thanks to the Apple representatives at BoilerMake who let us borrow 15 iPods for our demo!

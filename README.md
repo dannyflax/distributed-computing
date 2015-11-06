@@ -16,6 +16,14 @@ that runs on iOS devices.
 
 Android and Windows Phone applications are currently in development and will soon be in source control.
 
+## See it in action!
+
+This was our final display as we presented this project at [BoilerMake](https://boilermake.org)
+
+<img src="/pictures/image1.JPG" alt="alt text" style="width:100;height:100">
+
+You can check out a demonstration video [here](http://www.youtube.com/watch?v=S0o_DktUMO0)
+
 ## Contributing
 
 1. Fork it!
@@ -25,5 +33,8 @@ Android and Windows Phone applications are currently in development and will soo
 5. Submit a pull request :D
 
 ## Credits
-
-TODO: Write credits
+Project created by:
+Ben Stammen
+Danny Flax
+Taha Topiwala
+Sagnik Aditha

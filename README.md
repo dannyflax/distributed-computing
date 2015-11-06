@@ -34,7 +34,11 @@ You can check out a demonstration video [here](http://www.youtube.com/watch?v=S0
 
 ## Credits
 Project created by:
+
 Ben Stammen
+
 Danny Flax
+
 Taha Topiwala
+
 Sagnik Aditha

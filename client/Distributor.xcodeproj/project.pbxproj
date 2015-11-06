@@ -16,6 +16,9 @@
 		0F9F47D31BD2020100355E77 /* DistrubutorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F9F47D21BD2020100355E77 /* DistrubutorTests.m */; };
 		0F9F47DE1BD2020200355E77 /* DistrubutorUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F9F47DD1BD2020200355E77 /* DistrubutorUITests.m */; };
 		EF3D7E431BD22428008B7330 /* TCP_Handler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3D7E421BD22428008B7330 /* TCP_Handler.m */; settings = {ASSET_TAGS = (); }; };
+		EF98DF2D1BD372F500B153E7 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF98DF2A1BD372F400B153E7 /* Metal.framework */; };
+		EF98DF2E1BD372F500B153E7 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF98DF2B1BD372F400B153E7 /* MetalKit.framework */; };
+		EF98DF2F1BD372F500B153E7 /* MetalPerformanceShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF98DF2C1BD372F400B153E7 /* MetalPerformanceShaders.framework */; };
 		EFC752401BD325110013AB0F /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = EFC752301BD325110013AB0F /* AsyncSocket.m */; settings = {ASSET_TAGS = (); }; };
 		EFC752411BD325110013AB0F /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = EFC752321BD325110013AB0F /* AsyncUdpSocket.m */; settings = {ASSET_TAGS = (); }; };
 		EFC752421BD325110013AB0F /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = EFC752351BD325110013AB0F /* GCDAsyncSocket.m */; settings = {ASSET_TAGS = (); }; };
@@ -60,6 +63,9 @@
 		0F9F47DF1BD2020200355E77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF3D7E411BD22428008B7330 /* TCP_Handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCP_Handler.h; sourceTree = "<group>"; };
 		EF3D7E421BD22428008B7330 /* TCP_Handler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCP_Handler.m; sourceTree = "<group>"; };
+		EF98DF2A1BD372F400B153E7 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		EF98DF2B1BD372F400B153E7 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		EF98DF2C1BD372F400B153E7 /* MetalPerformanceShaders.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalPerformanceShaders.framework; path = System/Library/Frameworks/MetalPerformanceShaders.framework; sourceTree = SDKROOT; };
 		EFC7522C1BD2664B0013AB0F /* TCP_Delegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCP_Delegate.h; sourceTree = "<group>"; };
 		EFC7522F1BD325110013AB0F /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AsyncSocket.h; path = Source/RunLoop/AsyncSocket.h; sourceTree = "<group>"; };
 		EFC752301BD325110013AB0F /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AsyncSocket.m; path = Source/RunLoop/AsyncSocket.m; sourceTree = "<group>"; };
@@ -83,6 +89,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF98DF2D1BD372F500B153E7 /* Metal.framework in Frameworks */,
+				EF98DF2E1BD372F500B153E7 /* MetalKit.framework in Frameworks */,
+				EF98DF2F1BD372F500B153E7 /* MetalPerformanceShaders.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +180,9 @@
 		A204BE20D3738F9EDE961EAF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EF98DF2A1BD372F400B153E7 /* Metal.framework */,
+				EF98DF2B1BD372F400B153E7 /* MetalKit.framework */,
+				EF98DF2C1BD372F400B153E7 /* MetalPerformanceShaders.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
